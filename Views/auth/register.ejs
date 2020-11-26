@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/assets/vendors/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/assets/vendors/fontawesome/css/brands.min.css">
+    <title>Register - Cycling Club</title>
+</head>
+
+<body>
+    <%- include('../partials/header') %>
+    <main class="container">
+        <div class="row">
+            <div class="col-xl-4 col-md-4 col-sm-12 col-xs-12">
+                <h1 class="h1">Sign Up</h1>
+                <div class="social-btn-group text-center">
+                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-google"></i> Sign up with
+                        Google</a>
+                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-facebook"></i> Sign up with
+                        Facebook</a>
+                </div>
+                <div class="hr-text text-center"><span>or</span></div>
+                <form action="/register" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="John Doe">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="johndoe@mail.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="********">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-main btn-block">Register</button>
+                    </div>
+                </form>
+                <div>
+                    <p>Allready have an account? <a href="/login" class="text-decoration-none">Login</a></p>
+                </div>
+            </div>
+            <div class="col-xl-8 col-md-8 d-sm-none d-md-block">
+                <img src="/assets/images/register.png" alt="" class="img-fluid mx-5">
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+
+</html>
