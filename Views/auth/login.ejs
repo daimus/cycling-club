@@ -14,9 +14,14 @@
         <div class="row">
             <div class="col-xl-4 col-md-4 col-sm-12 col-xs-12">
                 <h1 class="h1">Sign In</h1>
+                <div id="alert">
+                    <%- include('../partials/alert') %>
+                </div>
                 <div class="social-btn-group text-center">
-                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-google"></i> Sign in with Google</a>
-                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-facebook"></i> Sign in with Facebook</a>
+                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-google"></i> Sign in with
+                        Google</a>
+                    <a href="" class="btn btn-outline-primary social-btn"><i class="fab fa-facebook"></i> Sign in with
+                        Facebook</a>
                 </div>
                 <div class="hr-text text-center"><span>or</span></div>
                 <form action="/login" method="POST">
@@ -26,15 +31,16 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <span class="form-label-description"><a href="/forgot" class="text-decoration-none">I forgot password</a></span>
+                        <span class="form-label-description"><a href="/forgot" class="text-decoration-none">I forgot
+                                password</a></span>
                         <input type="password" name="password" class="form-control" placeholder="********">
                     </div>
                     <div class="mb-3 form-check">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
-                          Remember this session
+                            Remember this session
                         </label>
-                      </div>
+                    </div>
                     <div class="mb-3">
                         <button type="submit" class="btn btn-main btn-block">Login</button>
                     </div>

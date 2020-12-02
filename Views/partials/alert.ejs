@@ -1,0 +1,8 @@
+<% if (alert){ %>
+<% alert.forEach((value, index) => { %>
+<div class="alert alert-<%= value.status %> alert-dismissible fade show" role="alert">
+    <strong><%= value.title %></strong> <%= value.message %>
+    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+</div>
+<% }) %>
+<% } %>
