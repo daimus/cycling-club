@@ -2,62 +2,81 @@
  * Call required module
  */
 
- const express = require('express');
- const session = require('express-session');
- const cookieParser = require('cookie-parser');
- const bodyParser = require('body-parser');
- const dotenv = require('dotenv').config();
- const flash = require('express-flash');
- const mongoose = require('mongoose');
- const multer = require('multer');
- const methodOverride = require('method-override');
- 
- /**
-  * Create express server
-  */
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config();
+const flash = require('express-flash');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const methodOverride = require('method-override');
+const passport = require('passport');
+const MongoStore = require('connect-mongo')(session);
 
-  const app = express();
+/**
+ * Create express server
+ */
 
-  /**
-   * Express configuration
-   */
+const passportConfig = require('./Config/Passport');
+const app = express();
 
-   app.use(express.static('public'));
-   app.set('view engine', 'ejs');
-   app.use(bodyParser.urlencoded({extended: false}));
-   app.use(bodyParser.json());
-   app.use(cookieParser('secret'));
-   app.use(session({cookie: {maxAge: 60000}}));
-   app.use(flash());
-   app.use(methodOverride('_method'));
+/**
+ * Express configuration
+ */
 
-   /**
-    * Create connection to mongodb
-    */
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+        url: process.env.MONGODB_URI,
+        autoReconnect: true
+    })
+}));
+app.use(flash());
+app.use(methodOverride('_method'));
 
-   mongoose.set('useFindAndModify', false);
-   mongoose.set('useCreateIndex', true);
-   mongoose.set('useNewUrlParser', true);
-   mongoose.set('useUnifiedTopology', true);
-   mongoose.connect(process.env.MONGODB_URI);
-   mongoose.connection.on('error', (err) => {
-       console.error(err);
-       console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-       process.exit();
-   });
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
-   /** 
-    * Define application route
-    */
+app.use((req, res, next) => {
+    res.locals.user = req.user;
+    res.locals.alert = req.flash('alert');
+    next();
+});
+/**
+ * Create connection to mongodb
+ */
 
-   const initRoutes = require('./routes');
-   initRoutes(app);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.connect(process.env.MONGODB_URI);
+mongoose.connection.on('error', (err) => {
+    console.error(err);
+    console.log('MongoDB connection error. Please make sure MongoDB is running.');
+    process.exit();
+});
 
-   /** 
-    * Start express server
-    */
+/** 
+ * Define application route
+ */
 
-   app.listen(3000, () => {
-    console.log('App is running on port 3000');
-    console.log('Press Ctrl+C to stop');
+const initRoutes = require('./routes');
+initRoutes(app);
+
+/** 
+ * Start express server
+ */
+
+app.listen(process.env.APP_PORT, () => {
+    console.log(`App is running on port ${process.env.APP_PORT}`);
 });

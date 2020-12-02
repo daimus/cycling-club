@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {authenticatedOnly, unAuthenticatedOnly} = require('./Middleware/Auth');
 
 /** 
  * Define app controllers
@@ -12,14 +13,15 @@ const router = express.Router();
 
  let routes = (app) => {
     router.get('/', homeController.index);
-    router.get('/login', authController.login);
-    router.post('/login', authController.signin);
-    router.get('/register', authController.register);
-    router.post('/register', authController.signup);
-    router.get('/logout', authController.logout);
+    router.get('/login', unAuthenticatedOnly, authController.login);
+    router.post('/login', unAuthenticatedOnly, authController.signin);
+    router.get('/register', unAuthenticatedOnly, authController.register);
+    router.post('/register', unAuthenticatedOnly, authController.signup);
+    router.get('/logout', authenticatedOnly, authController.logout);
 
     router.get('/gallery', galleryController.index);
     router.get('/member', userController.index);
+    router.get('/profile', authenticatedOnly, userController.profile);
     app.use(router);
  };
 
