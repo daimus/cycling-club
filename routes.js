@@ -22,6 +22,9 @@ const {authenticatedOnly, unAuthenticatedOnly} = require('./Middleware/Auth');
     router.get('/gallery', galleryController.index);
     router.get('/member', userController.index);
     router.get('/profile', authenticatedOnly, userController.profile);
+    router.patch('/profile', [authenticatedOnly, userController.upload('avatar')], userController.updateProfile);
+    router.post('/password', [authenticatedOnly, userController.validator('updatePassword')], userController.updatePassword);
+    router.delete('/profile', authenticatedOnly, userController.deleteAccount);
     app.use(router);
  };
 

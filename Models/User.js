@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { passwordHash } = require('../Utils/Hash');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -16,29 +17,25 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: '/uploads/avatars/default.jpg'
+        default: 'default.jpg'
     }
 }, {
     timestamps: true
 });
 
 userSchema.pre('save', function (next) {
+    console.log('pre save');
     const user = this;
-    bcrypt.genSalt(10, (err, salt) => {
+    passwordHash(user.password, (err, hash) => {
         if (err) {
             return next(err);
         }
-        bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) {
-                return next(err);
-            }
-            user.password = hash;
-            next();
-        });
+        user.password = hash;
+        next();
     });
 });
 
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb){
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
         cb(err, isMatch);
     });
