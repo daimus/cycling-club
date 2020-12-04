@@ -4,6 +4,12 @@
 <head>
     <%- include('../partials/head') %>
     <title>Member - Cycling Club</title>
+    <style>
+        .avatar {
+            width: 80px;
+            height: 80px;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,29 +21,33 @@
                 <div class="text-muted mt-1">1-20 of 500 members</div>
             </div>
             <div class="col">
-                <div class="d-flex">
-                    <input type="search" class="form-control d-inline-block mr-3" placeholder="Search member...">
-                    <button type="button" class="btn btn-primary">Search</button>
-                </div>
+                <form action="" method="GET" class="d-flex">
+                    <input type="search" name="q" class="form-control d-inline-block mr-3" placeholder="Search member...">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
             </div>
         </div>
 
         <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="card card-member">
-                    <div class="card-body">
-                        <div class="row g-2 align-items-center">
-                            <div class="col-auto">
-                                <img src="/assets/images/1.jpg" alt="" class="rounded img-fluid avatar">
-                            </div>
-                            <div class="col">
-                                <h3 class="mb-0">Pawet Kuna</h3>
-                                <div class="text-muted text-h5">UI Designer</div>
+            <% if (users){ %>
+                <% users.forEach((user, index) => { %>
+                    <div class="col-md-4">
+                        <div class="card card-member">
+                            <div class="card-body">
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-auto">
+                                        <img src="/uploads/avatars/<%= user.avatar %>" alt="" class="rounded img-fluid avatar">
+                                    </div>
+                                    <div class="col">
+                                        <h3 class="mb-0"><%= user.name %></h3>
+                                        <div class="text-muted text-h5"><%= user.email %></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                <% }); %>
+            <% } %>
         </div>
     </main>
     <%- include('../partials/footer') %>
